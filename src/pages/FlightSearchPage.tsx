@@ -4,7 +4,7 @@ import MainLayout from '../components/Layout/MainLayout';
 import FlightCard from '../components/Flight/FlightCard';
 import { searchFlights } from '../data/flights';
 import { Flight, SortOption, SortDirection } from '../types';
-import { ArrowUpDown, ArrowUp, ArrowDown, Clock, DollarSign, Calendar, Search, Filter } from 'lucide-react';
+import { ArrowUpDown, ArrowUp, ArrowDown, Clock, IndianRupee, Calendar, Search, Filter } from 'lucide-react';
 
 const FlightSearchPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -139,7 +139,7 @@ const FlightSearchPage: React.FC = () => {
               <div>
                 <label 
                   htmlFor="searchFrom" 
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  className="block text-2xl font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
                   From
                 </label>
@@ -156,7 +156,7 @@ const FlightSearchPage: React.FC = () => {
               <div>
                 <label 
                   htmlFor="searchTo" 
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
                   To
                 </label>
@@ -252,7 +252,7 @@ const FlightSearchPage: React.FC = () => {
                         : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
                     }`}
                   >
-                    <DollarSign className="h-4 w-4" />
+                    <IndianRupee className="h-4 w-4" />
                     <span>Price</span>
                     {getSortIcon('price')}
                   </button>

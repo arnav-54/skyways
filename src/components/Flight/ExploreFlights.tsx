@@ -6,6 +6,9 @@ import { Globe, MapPin, Calendar, ArrowRight } from 'lucide-react';
 
 const ExploreFlights: React.FC = () => {
   const [randomFlights, setRandomFlights] = useState<Flight[]>([]);
+  const [date, setDate] = useState<string>(
+    new Date(2025, 4, 15).toISOString().split('T')[0] // May 15, 2025
+  );
   
   useEffect(() => {
     setRandomFlights(getRandomFlights(3));

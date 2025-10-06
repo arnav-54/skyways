@@ -29,7 +29,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user data exists in localStorage
+    
     const userData = localStorage.getItem('user');
     if (userData) {
       try {
@@ -48,7 +48,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       if (authenticatedUser) {
         setUser(authenticatedUser);
-        // Store user data in localStorage (without password in a real app)
+       
         localStorage.setItem('user', JSON.stringify(authenticatedUser));
         return { success: true };
       }
@@ -68,10 +68,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const register = async (name: string, email: string, password: string) => {
     try {
-      // Create new user
+ 
       const newUser = registerUser({ name, email, password });
       setUser(newUser);
-      // Store user data in localStorage (without password in a real app)
+    
       localStorage.setItem('user', JSON.stringify(newUser));
       return { success: true };
     } catch (error) {
@@ -104,7 +104,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   );
 };
 
-// Custom hook for using the auth context
+
 export const useAuth = () => {
   const context = React.useContext(AuthContext);
   if (context === undefined) {

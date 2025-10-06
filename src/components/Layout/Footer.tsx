@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
     <footer className="bg-gray-100 dark:bg-gray-900 pt-12 pb-8 transition-colors duration-200">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Company Info */}
+         
           <div>
             <div className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 mb-4">
               <Plane className="h-6 w-6" />
@@ -29,7 +29,7 @@ const Footer: React.FC = () => {
             </div>
           </div>
           
-          {/* Quick Links */}
+      
           <div>
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Quick Links</h3>
             <ul className="space-y-2">
@@ -38,25 +38,25 @@ const Footer: React.FC = () => {
                   Home
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/about" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   About Us
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/bookings" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   My Bookings
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/contact" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   Contact Us
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
           
-          {/* Support */}
+        
           <div>
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Support</h3>
             <ul className="space-y-2">
@@ -83,7 +83,7 @@ const Footer: React.FC = () => {
             </ul>
           </div>
           
-          {/* Contact */}
+  
           <div>
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Contact Us</h3>
             <ul className="space-y-3">

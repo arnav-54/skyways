@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { getFlightById } from '../data/flights';
 import { addBooking } from '../data/bookings';
 import { Flight } from '../types';
-import { Plane, Calendar, Clock, Users, DollarSign, AlertCircle } from 'lucide-react';
+import { Plane, Calendar, Clock, Users, IndianRupee, AlertCircle } from 'lucide-react';
 
 const BookingPage: React.FC = () => {
   const { flightId } = useParams<{ flightId: string }>();
@@ -243,7 +243,7 @@ const BookingPage: React.FC = () => {
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between items-center">
                   <span className="font-medium text-gray-900 dark:text-white">Total Price:</span>
                   <div className="flex items-center">
-                    <DollarSign className="h-4 w-4 mr-1 text-blue-600 dark:text-blue-400" />
+                    <IndianRupee className="h-4 w-4 mr-1 text-blue-600 dark:text-blue-400" />
                     <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
                       {formattedTotalPrice}
                     </span>

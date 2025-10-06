@@ -1,11 +1,12 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import { useAuth } from '../context/AuthContext';
-import { getUserBookings, getBookingsByStatus, updateBookingStatus } from '../data/bookings';
+import { getBookingsByStatus, updateBookingStatus } from '../data/bookings';
 import { getFlightById } from '../data/flights';
 import { Booking, Flight } from '../types';
-import { Plane, Calendar, Clock, DollarSign } from 'lucide-react';
+import { Plane, Calendar, Clock, IndianRupee } from 'lucide-react';
 
 const BookingsPage: React.FC = () => {
   const { user, isAuthenticated } = useAuth();
@@ -19,24 +20,19 @@ const BookingsPage: React.FC = () => {
   useEffect(() => {
     if (!user) return;
 
-    // Get bookings for the active tab
     const userBookings = getBookingsByStatus(user.id, activeTab);
     setBookings(userBookings);
-    
-    // Get flight data for each booking
+
     const flights: Record<string, Flight> = {};
     userBookings.forEach(booking => {
       const flight = getFlightById(booking.flightId);
-      if (flight) {
-        flights[booking.flightId] = flight;
-      }
+      if (flight) flights[booking.flightId] = flight;
     });
-    
+
     setFlightsMap(flights);
     setIsLoading(false);
   }, [user, activeTab]);
 
-  // Redirect if not authenticated
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
@@ -44,10 +40,7 @@ const BookingsPage: React.FC = () => {
   const handleCancelBooking = (bookingId: string) => {
     if (window.confirm('Are you sure you want to cancel this booking?')) {
       updateBookingStatus(bookingId, 'cancelled');
-      // Update state
-      setBookings(prevBookings => 
-        prevBookings.filter(booking => booking.id !== bookingId)
-      );
+      setBookings(prev => prev.filter(b => b.id !== bookingId));
     }
   };
 
@@ -65,157 +58,139 @@ const BookingsPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-6">
-        <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-bold text-white">My Bookings</h1>
+      {/* Page Header */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-6 shadow-md">
+        <div className="container mx-auto px-4 text-white">
+          <h1 className="text-2xl md:text-3xl font-bold">My Bookings</h1>
+          <p className="text-sm md:text-base mt-1 opacity-90">Manage your upcoming, completed, and cancelled trips</p>
         </div>
       </div>
-      
+
       <div className="container mx-auto px-4 py-8">
         {/* Tabs */}
-        <div className="mb-6 border-b border-gray-200 dark:border-gray-700">
-          <div className="flex flex-wrap -mb-px">
+        <div className="mb-8 flex flex-wrap gap-2">
+          {['upcoming', 'completed', 'cancelled'].map(tab => (
             <button
-              onClick={() => setActiveTab('upcoming')}
-              className={`inline-block p-4 mr-2 border-b-2 font-medium ${
-                activeTab === 'upcoming'
-                  ? 'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+              key={tab}
+              onClick={() => setActiveTab(tab as any)}
+              className={`px-5 py-2 rounded-full font-medium transition-all duration-300 ${
+                activeTab === tab
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
-              Upcoming
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
-            <button
-              onClick={() => setActiveTab('completed')}
-              className={`inline-block p-4 mr-2 border-b-2 font-medium ${
-                activeTab === 'completed'
-                  ? 'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-              }`}
-            >
-              Completed
-            </button>
-            <button
-              onClick={() => setActiveTab('cancelled')}
-              className={`inline-block p-4 border-b-2 font-medium ${
-                activeTab === 'cancelled'
-                  ? 'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-              }`}
-            >
-              Cancelled
-            </button>
-          </div>
+          ))}
         </div>
-        
+
+        {/* Loading */}
         {isLoading ? (
-          <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          <div className="flex justify-center items-center py-32">
+            <div className="animate-spin rounded-full h-14 w-14 border-t-4 border-b-4 border-blue-500"></div>
           </div>
         ) : (
           <>
+            {/* Empty State */}
             {bookings.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                  No {activeTab} bookings found
-                </p>
+              <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+                <Plane className="mx-auto mb-4 w-16 h-16 text-blue-500" />
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+                  No {activeTab} bookings
+                </h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  {activeTab === 'upcoming' 
+                  {activeTab === 'upcoming'
                     ? "You don't have any upcoming bookings at the moment."
                     : activeTab === 'completed'
                       ? "You haven't completed any trips yet."
-                      : "You don't have any cancelled bookings."
-                  }
+                      : "You don't have any cancelled bookings."}
                 </p>
-                {activeTab !== 'upcoming' && (
-                  <button
-                    onClick={() => setActiveTab('upcoming')}
-                    className="btn-secondary"
+                <div className="flex justify-center gap-4">
+                  {activeTab !== 'upcoming' && (
+                    <button
+                      onClick={() => setActiveTab('upcoming')}
+                      className="px-6 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium rounded-lg shadow hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                    >
+                      View Upcoming
+                    </button>
+                  )}
+                  <Link
+                    to="/"
+                    className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors"
                   >
-                    View Upcoming Bookings
-                  </button>
-                )}
-                <Link 
-                  to="/" 
-                  className="btn-primary ml-4"
-                >
-                  Book a Flight
-                </Link>
+                    Book a Flight
+                  </Link>
+                </div>
               </div>
             ) : (
+              /* Bookings List */
               <div className="space-y-6">
                 {bookings.map(booking => {
                   const flight = flightsMap[booking.flightId];
                   if (!flight) return null;
-                  
+
                   return (
-                    <div key={booking.id} className="card hover:shadow-lg transition-shadow">
-                      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+                    <div key={booking.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-shadow duration-300">
+                      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 items-center">
+                        
                         {/* Flight Info */}
-                        <div className="lg:col-span-2">
-                          <div className="flex items-start space-x-3">
-                            <div className="p-2 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full">
-                              <Plane className="h-6 w-6" />
-                            </div>
-                            <div>
-                              <h3 className="font-bold text-gray-900 dark:text-white">
-                                {flight.airline} - {flight.flightNumber}
-                              </h3>
-                              <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {flight.departureCity} ({flight.departureCode}) →{' '}
-                                {flight.arrivalCity} ({flight.arrivalCode})
-                              </p>
-                            </div>
+                        <div className="lg:col-span-2 flex items-start space-x-3">
+                          <div className="p-3 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full">
+                            <Plane className="h-6 w-6" />
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-gray-900 dark:text-white">
+                              {flight.airline} - {flight.flightNumber}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                              {flight.departureCity} ({flight.departureCode}) → {flight.arrivalCity} ({flight.arrivalCode})
+                            </p>
                           </div>
                         </div>
-                        
+
                         {/* Date & Time */}
-                        <div className="lg:col-span-1">
+                        <div className="lg:col-span-1 space-y-1">
                           <div className="flex items-center space-x-2">
                             <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                            <span className="text-gray-700 dark:text-gray-300">
-                              {formatDate(flight.date)}
-                            </span>
+                            <span className="text-gray-700 dark:text-gray-300">{formatDate(flight.date)}</span>
                           </div>
-                          <div className="flex items-center space-x-2 mt-1">
+                          <div className="flex items-center space-x-2">
                             <Clock className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                             <span className="text-gray-700 dark:text-gray-300">
                               {flight.departureTime} - {flight.arrivalTime}
                             </span>
                           </div>
                         </div>
-                        
+
                         {/* Price */}
-                        <div className="lg:col-span-1">
+                        <div className="lg:col-span-1 space-y-1">
                           <div className="flex items-center space-x-1">
-                            <DollarSign className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                            <span className="font-bold text-gray-900 dark:text-white">
-                              ₹{booking.totalPrice.toLocaleString()}
-                            </span>
+                            <IndianRupee className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                            <span className="font-bold text-gray-900 dark:text-white">₹{booking.totalPrice.toLocaleString()}</span>
                           </div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
                             {booking.passengers} passenger{booking.passengers > 1 ? 's' : ''}
                           </p>
                         </div>
-                        
+
                         {/* Actions */}
-                        <div className="lg:col-span-1 flex lg:justify-end items-center space-x-2">
+                        <div className="lg:col-span-1 flex justify-end items-center gap-2">
                           <button
                             onClick={() => viewBookingDetails(booking.id)}
-                            className="btn-secondary py-1 px-3"
+                            className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium rounded-lg shadow hover:bg-gray-200 dark:hover:bg-gray-600 transition-all"
                           >
                             View Details
                           </button>
-                          
                           {activeTab === 'upcoming' && (
                             <button
                               onClick={() => handleCancelBooking(booking.id)}
-                              className="py-1 px-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md shadow-sm transition-colors duration-200"
+                              className="px-4 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition-colors"
                             >
                               Cancel
                             </button>
                           )}
                         </div>
+
                       </div>
                     </div>
                   );

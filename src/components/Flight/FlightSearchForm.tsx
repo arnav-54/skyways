@@ -7,7 +7,9 @@ const FlightSearchForm: React.FC = () => {
   const navigate = useNavigate();
   const [departure, setDeparture] = useState('');
   const [arrival, setArrival] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState<string>(
+    new Date(2025, 4, 15).toISOString().split('T')[0] 
+  );
   const [cities, setCities] = useState<{ city: string; code: string }[]>([]);
   const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [departureSuggestions, setDepartureSuggestions] = useState<{ city: string; code: string }[]>([]);
@@ -20,19 +22,19 @@ const FlightSearchForm: React.FC = () => {
     date: ''
   });
 
-  // Load available cities on mount
+
   useEffect(() => {
     const allCities = getAvailableCities();
     setCities(allCities);
   }, []);
 
-  // Update available dates when route changes
+
   useEffect(() => {
     if (departure && arrival) {
       const dates = getAvailableDates(departure, arrival);
       setAvailableDates(dates);
       
-      // If current date is not available, reset it
+    
       if (date && !dates.includes(date)) {
         setDate(dates[0] || '');
       }
@@ -125,7 +127,7 @@ const FlightSearchForm: React.FC = () => {
     }
   };
 
-  // Close suggestions when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -147,7 +149,7 @@ const FlightSearchForm: React.FC = () => {
       className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-colors duration-200"
     >
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Departure */}
+  
         <div id="departure-container" className="relative">
           <label 
             htmlFor="departure" 
@@ -193,7 +195,7 @@ const FlightSearchForm: React.FC = () => {
           )}
         </div>
         
-        {/* Arrival */}
+  
         <div id="arrival-container" className="relative">
           <label 
             htmlFor="arrival" 
@@ -239,7 +241,7 @@ const FlightSearchForm: React.FC = () => {
           )}
         </div>
         
-        {/* Date */}
+    
         <div>
           <label 
             htmlFor="date" 

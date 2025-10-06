@@ -1,7 +1,7 @@
 import React from 'react';
 import { Booking } from '../../types';
 import { Flight } from '../../types';
-import { Calendar, Clock, DollarSign, Users } from 'lucide-react';
+import { Calendar, Clock, IndianRupee, Users } from 'lucide-react';
 
 interface BookingDetailsProps {
   booking: Booking;
@@ -10,7 +10,7 @@ interface BookingDetailsProps {
 }
 
 const BookingDetails: React.FC<BookingDetailsProps> = ({ booking, flight, onCancelBooking }) => {
-  // Status badge styles
+
   const getStatusBadgeClass = () => {
     switch (booking.status) {
       case 'upcoming':
@@ -24,14 +24,14 @@ const BookingDetails: React.FC<BookingDetailsProps> = ({ booking, flight, onCanc
     }
   };
 
-  // Format booking date
+  
   const formattedBookingDate = new Date(booking.bookingDate).toLocaleDateString('en-US', {
     year: 'numeric', 
     month: 'long', 
     day: 'numeric'
   });
 
-  // Format flight date
+
   const formattedFlightDate = new Date(flight.date).toLocaleDateString('en-US', {
     year: 'numeric', 
     month: 'long', 
@@ -124,7 +124,7 @@ const BookingDetails: React.FC<BookingDetailsProps> = ({ booking, flight, onCanc
             <div className="flex items-center justify-between">
               <span className="text-gray-600 dark:text-gray-400">Total price:</span>
               <div className="flex items-center">
-                <DollarSign className="h-4 w-4 mr-1 text-blue-600 dark:text-blue-400" />
+                <IndianRupee className="h-4 w-4 mr-1 text-blue-600 dark:text-blue-400" />
                 <span className="font-bold text-xl text-blue-600 dark:text-blue-400">
                   ₹{(booking.totalPrice).toLocaleString()}
                 </span>

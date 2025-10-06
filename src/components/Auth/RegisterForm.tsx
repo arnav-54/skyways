@@ -35,7 +35,7 @@ const RegisterForm: React.FC = () => {
       const result = await register(name, email, password);
       
       if (result.success) {
-        // Redirect to homepage after successful registration
+       
         navigate('/');
       } else {
         setError(result.message || 'Failed to register');

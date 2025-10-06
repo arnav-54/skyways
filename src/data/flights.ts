@@ -1,6 +1,6 @@
 import { Flight } from '../types';
 
-// Generate a large set of mock flights
+
 const generateFlights = (): Flight[] => {
   const airlines = [
     'Air India', 'IndiGo', 'Vistara', 'SpiceJet', 'Go First',
@@ -8,7 +8,7 @@ const generateFlights = (): Flight[] => {
   ];
   
   const cities = [
-    // Indian Cities
+ 
     { city: 'Delhi', airport: 'Indira Gandhi International Airport', code: 'DEL' },
     { city: 'Mumbai', airport: 'Chhatrapati Shivaji International Airport', code: 'BOM' },
     { city: 'Bangalore', airport: 'Kempegowda International Airport', code: 'BLR' },
@@ -20,7 +20,7 @@ const generateFlights = (): Flight[] => {
     { city: 'Jaipur', airport: 'Jaipur International Airport', code: 'JAI' },
     { city: 'Ahmedabad', airport: 'Sardar Vallabhbhai Patel International Airport', code: 'AMD' },
     
-    // International Cities
+   
     { city: 'Dubai', airport: 'Dubai International Airport', code: 'DXB' },
     { city: 'London', airport: 'Heathrow Airport', code: 'LHR' },
     { city: 'New York', airport: 'John F. Kennedy International Airport', code: 'JFK' },
@@ -35,9 +35,9 @@ const generateFlights = (): Flight[] => {
 
   const flights: Flight[] = [];
   
-  // Generate dates from May to September 2024
-  const startDate = new Date('2024-05-01');
-  const endDate = new Date('2024-09-30');
+ 
+  const startDate = new Date('2025-05-01');
+  const endDate = new Date('2025-09-30');
   const dates: string[] = [];
   
   for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
@@ -46,7 +46,7 @@ const generateFlights = (): Flight[] => {
   
   let id = 1;
   
-  // Create flights between each pair of cities for each date
+  
   for (const date of dates) {
     for (let i = 0; i < cities.length; i++) {
       for (let j = 0; j < cities.length; j++) {
@@ -54,12 +54,12 @@ const generateFlights = (): Flight[] => {
           const departureCity = cities[i];
           const arrivalCity = cities[j];
           
-          // Create more flights for popular routes
+        
           const isPopularRoute = (
-            // Pune connections
+           
             (departureCity.code === 'PNQ' && ['DEL', 'BOM', 'BLR', 'HYD', 'DXB'].includes(arrivalCity.code)) ||
             (['DEL', 'BOM', 'BLR', 'HYD', 'DXB'].includes(departureCity.code) && arrivalCity.code === 'PNQ') ||
-            // Other popular domestic routes
+     
             (departureCity.code === 'DEL' && ['BOM', 'BLR', 'HYD'].includes(arrivalCity.code)) ||
             (['BOM', 'BLR', 'HYD'].includes(departureCity.code) && arrivalCity.code === 'DEL')
           );
@@ -67,14 +67,14 @@ const generateFlights = (): Flight[] => {
           const numFlights = isPopularRoute ? 5 : 2 + Math.floor(Math.random() * 2);
           
           for (let k = 0; k < numFlights; k++) {
-            // Distribute flights throughout the day
+           
             const departureHour = Math.floor((24 / numFlights) * k + Math.random() * (24 / numFlights));
             
-            // Calculate duration based on route
+        
             let durationHours: number;
             let basePrice: number;
             
-            // Pune specific routes
+       
             if (departureCity.code === 'PNQ' || arrivalCity.code === 'PNQ') {
               if (['DEL', 'CCU'].includes(departureCity.code) || ['DEL', 'CCU'].includes(arrivalCity.code)) {
                 durationHours = 2 + Math.floor(Math.random() * 1); // ~2-3 hours
@@ -83,27 +83,27 @@ const generateFlights = (): Flight[] => {
                 durationHours = 1 + Math.floor(Math.random() * 1); // ~1-2 hours
                 basePrice = 3000 + Math.floor(Math.random() * 2000);
               } else {
-                // International connections from Pune
+              
                 durationHours = 6 + Math.floor(Math.random() * 8);
                 basePrice = 35000 + Math.floor(Math.random() * 25000);
               }
             } else if (cities[i].code.match(/^[A-Z]{3}$/) && cities[j].code.match(/^[A-Z]{3}$/)) {
-              // Other domestic flights
+     
               durationHours = 1 + Math.floor(Math.random() * 3);
               basePrice = 3000 + Math.floor(Math.random() * 4000);
             } else if (departureCity.code === 'DEL' && ['JFK', 'YYZ', 'SYD'].includes(arrivalCity.code)) {
-              // Long-haul international flights
+          
               durationHours = 14 + Math.floor(Math.random() * 4);
               basePrice = 75000 + Math.floor(Math.random() * 25000);
             } else {
-              // Medium-haul international flights
+        
               durationHours = 6 + Math.floor(Math.random() * 6);
               basePrice = 35000 + Math.floor(Math.random() * 25000);
             }
             
             const durationMinutes = Math.floor(Math.random() * 60);
             
-            // Calculate arrival time
+        
             const totalMinutes = departureHour * 60 + durationHours * 60 + durationMinutes;
             const arrivalHour = Math.floor((totalMinutes / 60) % 24);
             const arrivalMinute = totalMinutes % 60;
@@ -142,12 +142,12 @@ const generateFlights = (): Flight[] => {
   return flights;
 };
 
-// Generate mock flights
+
 export const mockFlights = generateFlights();
 
-// Function to search flights
+
 export const searchFlights = async (from: string, to: string, date: string): Promise<Flight[]> => {
-  // Simulate API delay
+  
   await new Promise(resolve => setTimeout(resolve, 500));
   
   return mockFlights.filter(flight => 
@@ -159,18 +159,18 @@ export const searchFlights = async (from: string, to: string, date: string): Pro
   );
 };
 
-// Function to get a flight by ID
+
 export const getFlightById = (id: string): Flight | undefined => {
   return mockFlights.find(flight => flight.id === id);
 };
 
-// Function to get random flights for the explore section
+
 export const getRandomFlights = (count: number): Flight[] => {
   const shuffled = [...mockFlights].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 };
 
-// Function to get available dates for a route
+
 export const getAvailableDates = (from: string, to: string): string[] => {
   return Array.from(new Set(
     mockFlights
@@ -184,7 +184,7 @@ export const getAvailableDates = (from: string, to: string): string[] => {
   )).sort();
 };
 
-// Function to get all available cities
+
 export const getAvailableCities = (): { city: string; code: string }[] => {
   const cities = new Set<string>();
   const result: { city: string; code: string }[] = [];

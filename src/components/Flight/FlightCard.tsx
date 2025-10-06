@@ -1,21 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Flight } from '../../types';
-import { Clock, DollarSign, Users } from 'lucide-react';
+import { Clock, IndianRupee, Users } from 'lucide-react';
 
 interface FlightCardProps {
   flight: Flight;
 }
 
 const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
-  // Format price
+
   const formattedPrice = new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
     maximumFractionDigits: 0,
   }).format(flight.price);
 
-  // Determine badge color based on price range
+ 
   let priceBadgeColor = 'bg-green-100 text-green-800';
   if (flight.price > 10000) {
     priceBadgeColor = 'bg-yellow-100 text-yellow-800';
@@ -33,14 +33,14 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
         </div>
 
         <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Departure */}
+       
           <div className="text-center">
             <p className="text-xl font-bold text-gray-900 dark:text-white">{flight.departureTime}</p>
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{flight.departureCity}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400">{flight.departureCode}</p>
           </div>
 
-          {/* Flight Duration */}
+       
           <div className="relative flex flex-col items-center justify-center">
             <div className="w-full border-t border-gray-300 dark:border-gray-700 absolute top-1/2"></div>
             <div className="bg-white dark:bg-gray-800 px-2 z-10 text-center">
@@ -52,7 +52,7 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
             </div>
           </div>
 
-          {/* Arrival */}
+       
           <div className="text-center">
             <p className="text-xl font-bold text-gray-900 dark:text-white">{flight.arrivalTime}</p>
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{flight.arrivalCity}</p>
@@ -64,7 +64,7 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
       <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row items-center justify-between">
         <div className="flex items-center space-x-4 mb-4 md:mb-0">
           <div className={`px-3 py-1 rounded-full text-sm font-medium ${priceBadgeColor}`}>
-            <DollarSign className="inline-block h-4 w-4 mr-1" />
+            <IndianRupee className="inline-block h-4 w-4 mr-1" />
             {formattedPrice}
           </div>
           <div className="flex items-center text-gray-600 dark:text-gray-400">
