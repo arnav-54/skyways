@@ -1,20 +1,18 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import { useAuth } from '../context/AuthContext';
 import { getBookingsByStatus, updateBookingStatus } from '../data/bookings';
 import { getFlightById } from '../data/flights';
-import { Booking, Flight } from '../types';
 import { Plane, Calendar, Clock, IndianRupee } from 'lucide-react';
 
-const BookingsPage: React.FC = () => {
+const BookingsPage = () => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   
-  const [activeTab, setActiveTab] = useState<'upcoming' | 'completed' | 'cancelled'>('upcoming');
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [flightsMap, setFlightsMap] = useState<Record<string, Flight>>({});
+  const [activeTab, setActiveTab] = useState('upcoming');
+  const [bookings, setBookings] = useState([]);
+  const [flightsMap, setFlightsMap] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -23,7 +21,7 @@ const BookingsPage: React.FC = () => {
     const userBookings = getBookingsByStatus(user.id, activeTab);
     setBookings(userBookings);
 
-    const flights: Record<string, Flight> = {};
+    const flights = {};
     userBookings.forEach(booking => {
       const flight = getFlightById(booking.flightId);
       if (flight) flights[booking.flightId] = flight;
@@ -37,18 +35,18 @@ const BookingsPage: React.FC = () => {
     return <Navigate to="/login" />;
   }
 
-  const handleCancelBooking = (bookingId: string) => {
+  const handleCancelBooking = (bookingId) => {
     if (window.confirm('Are you sure you want to cancel this booking?')) {
       updateBookingStatus(bookingId, 'cancelled');
       setBookings(prev => prev.filter(b => b.id !== bookingId));
     }
   };
 
-  const viewBookingDetails = (bookingId: string) => {
+  const viewBookingDetails = (bookingId) => {
     navigate(`/booking-confirmation/${bookingId}`);
   };
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
@@ -72,7 +70,7 @@ const BookingsPage: React.FC = () => {
           {['upcoming', 'completed', 'cancelled'].map(tab => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab as any)}
+              onClick={() => setActiveTab(tab)}
               className={`px-5 py-2 rounded-full font-medium transition-all duration-300 ${
                 activeTab === tab
                   ? 'bg-blue-600 text-white shadow-md'

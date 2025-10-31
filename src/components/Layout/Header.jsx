@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 import { Plane, Sun, Moon, Menu, X, User, LogOut } from 'lucide-react';
 
-const Header: React.FC = () => {
+const Header = () => {
   const { theme, toggleTheme } = useTheme();
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -25,18 +24,16 @@ const Header: React.FC = () => {
     ...(isAuthenticated ? [{ name: 'My Bookings', path: '/bookings' }] : []),
   ];
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path) => location.pathname === path;
 
   return (
     <header className="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-md transition-colors duration-300">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-      
         <Link to="/" className="flex items-center space-x-2 text-blue-600 dark:text-blue-400">
           <Plane className="h-8 w-8" />
           <span className="text-3xl font-bold">SkyWays</span>
         </Link>
 
-       
         <nav className="hidden md:flex items-center space-x-8">
           {navLinks.map((link) => (
             <Link
@@ -55,7 +52,6 @@ const Header: React.FC = () => {
             </Link>
           ))}
 
-       
           {isAuthenticated ? (
             <div className="relative">
               <button
@@ -95,7 +91,6 @@ const Header: React.FC = () => {
             </div>
           )}
 
-       
           <button
             onClick={toggleTheme}
             className="ml-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
@@ -105,7 +100,6 @@ const Header: React.FC = () => {
           </button>
         </nav>
 
-     
         <div className="flex md:hidden items-center space-x-4">
           <button
             onClick={toggleTheme}
@@ -118,7 +112,6 @@ const Header: React.FC = () => {
           </button>
         </div>
       </div>
-
 
       {isMenuOpen && (
         <div className="md:hidden fixed inset-0 bg-black/30 backdrop-blur-sm z-40 flex flex-col items-center justify-start pt-24 animate-slide-down">

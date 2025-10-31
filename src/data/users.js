@@ -1,7 +1,4 @@
-import { User } from '../types';
-
-
-let mockUsers: User[] = [
+let mockUsers = [
   {
     id: '1',
     name: 'Test User',
@@ -10,9 +7,8 @@ let mockUsers: User[] = [
   }
 ];
 
-
-export const registerUser = (user: Omit<User, 'id'>): User => {
-  const newUser: User = {
+export const registerUser = (user) => {
+  const newUser = {
     ...user,
     id: (mockUsers.length + 1).toString()
   };
@@ -20,18 +16,15 @@ export const registerUser = (user: Omit<User, 'id'>): User => {
   return newUser;
 };
 
-
-export const authenticateUser = (email: string, password: string): User | null => {
+export const authenticateUser = (email, password) => {
   const user = mockUsers.find(user => user.email === email && user.password === password);
   return user || null;
 };
 
-
-export const getUserById = (id: string): User | undefined => {
+export const getUserById = (id) => {
   return mockUsers.find(user => user.id === id);
 };
 
-
-export const isEmailRegistered = (email: string): boolean => {
+export const isEmailRegistered = (email) => {
   return mockUsers.some(user => user.email === email);
 };

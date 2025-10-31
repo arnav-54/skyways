@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import { useAuth } from '../context/AuthContext';
 import { getFlightById } from '../data/flights';
 import { addBooking } from '../data/bookings';
-import { Flight } from '../types';
 import { Plane, Calendar, Clock, Users, IndianRupee, AlertCircle } from 'lucide-react';
 
-const BookingPage: React.FC = () => {
-  const { flightId } = useParams<{ flightId: string }>();
+const BookingPage = () => {
+  const { flightId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, isAuthenticated } = useAuth();
   
-  const [flight, setFlight] = useState<Flight | null>(null);
+  const [flight, setFlight] = useState(null);
   const [passengers, setPassengers] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (flightId) {
@@ -30,7 +30,7 @@ const BookingPage: React.FC = () => {
     }
   }, [flightId]);
 
-  const handlePassengersChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePassengersChange = (e) => {
     const value = parseInt(e.target.value);
     if (value >= 1 && value <= (flight?.availableSeats || 1)) {
       setPassengers(value);
@@ -39,7 +39,7 @@ const BookingPage: React.FC = () => {
 
   const handleBookFlight = () => {
     if (!isAuthenticated) {
-      navigate('/login', { state: { from: `/book/${flightId}` } });
+      navigate('/login', { state: { from: location.pathname } });
       return;
     }
     

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getRandomFlights } from '../../data/flights';
-import { Flight } from '../../types';
 import { Globe, MapPin, Calendar, ArrowRight } from 'lucide-react';
 
-const ExploreFlights: React.FC = () => {
-  const [randomFlights, setRandomFlights] = useState<Flight[]>([]);
-  const [date, setDate] = useState<string>(
+const ExploreFlights = () => {
+  const [randomFlights, setRandomFlights] = useState([]);
+  const [date, setDate] = useState(
     new Date(2025, 4, 15).toISOString().split('T')[0] // May 15, 2025
   );
   

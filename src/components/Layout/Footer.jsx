@@ -2,7 +2,7 @@ import React from 'react';
 import { Plane, Mail, Phone, MapPin, Facebook, Twitter, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const Footer: React.FC = () => {
+const Footer = () => {
   return (
     <footer className="bg-gray-100 dark:bg-gray-900 pt-12 pb-8 transition-colors duration-200">
       <div className="container mx-auto px-4">

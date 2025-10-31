@@ -1,15 +1,8 @@
 import React from 'react';
-import { Booking } from '../../types';
-import { Flight } from '../../types';
 import { Calendar, Clock, IndianRupee, Users } from 'lucide-react';
 
-interface BookingDetailsProps {
-  booking: Booking;
-  flight: Flight;
-  onCancelBooking?: () => void;
-}
 
-const BookingDetails: React.FC<BookingDetailsProps> = ({ booking, flight, onCancelBooking }) => {
+const BookingDetails = ({ booking, flight, onCancelBooking }) => {
 
   const getStatusBadgeClass = () => {
     switch (booking.status) {

@@ -1,14 +1,10 @@
-import { Flight } from '../types';
-
-
-const generateFlights = (): Flight[] => {
+const generateFlights = () => {
   const airlines = [
     'Air India', 'IndiGo', 'Vistara', 'SpiceJet', 'Go First',
     'Emirates', 'British Airways', 'United Airlines', 'Singapore Airlines', 'Lufthansa'
   ];
   
   const cities = [
- 
     { city: 'Delhi', airport: 'Indira Gandhi International Airport', code: 'DEL' },
     { city: 'Mumbai', airport: 'Chhatrapati Shivaji International Airport', code: 'BOM' },
     { city: 'Bangalore', airport: 'Kempegowda International Airport', code: 'BLR' },
@@ -20,7 +16,6 @@ const generateFlights = (): Flight[] => {
     { city: 'Jaipur', airport: 'Jaipur International Airport', code: 'JAI' },
     { city: 'Ahmedabad', airport: 'Sardar Vallabhbhai Patel International Airport', code: 'AMD' },
     
-   
     { city: 'Dubai', airport: 'Dubai International Airport', code: 'DXB' },
     { city: 'London', airport: 'Heathrow Airport', code: 'LHR' },
     { city: 'New York', airport: 'John F. Kennedy International Airport', code: 'JFK' },
@@ -33,12 +28,11 @@ const generateFlights = (): Flight[] => {
     { city: 'Frankfurt', airport: 'Frankfurt Airport', code: 'FRA' }
   ];
 
-  const flights: Flight[] = [];
+  const flights = [];
   
- 
   const startDate = new Date('2025-05-01');
   const endDate = new Date('2025-09-30');
-  const dates: string[] = [];
+  const dates = [];
   
   for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
     dates.push(d.toISOString().split('T')[0]);
@@ -46,20 +40,16 @@ const generateFlights = (): Flight[] => {
   
   let id = 1;
   
-  
   for (const date of dates) {
     for (let i = 0; i < cities.length; i++) {
       for (let j = 0; j < cities.length; j++) {
-        if (i !== j) { // Don't create flights from a city to itself
+        if (i !== j) {
           const departureCity = cities[i];
           const arrivalCity = cities[j];
           
-        
           const isPopularRoute = (
-           
             (departureCity.code === 'PNQ' && ['DEL', 'BOM', 'BLR', 'HYD', 'DXB'].includes(arrivalCity.code)) ||
             (['DEL', 'BOM', 'BLR', 'HYD', 'DXB'].includes(departureCity.code) && arrivalCity.code === 'PNQ') ||
-     
             (departureCity.code === 'DEL' && ['BOM', 'BLR', 'HYD'].includes(arrivalCity.code)) ||
             (['BOM', 'BLR', 'HYD'].includes(departureCity.code) && arrivalCity.code === 'DEL')
           );
@@ -67,43 +57,35 @@ const generateFlights = (): Flight[] => {
           const numFlights = isPopularRoute ? 5 : 2 + Math.floor(Math.random() * 2);
           
           for (let k = 0; k < numFlights; k++) {
-           
             const departureHour = Math.floor((24 / numFlights) * k + Math.random() * (24 / numFlights));
             
-        
-            let durationHours: number;
-            let basePrice: number;
+            let durationHours;
+            let basePrice;
             
-       
             if (departureCity.code === 'PNQ' || arrivalCity.code === 'PNQ') {
               if (['DEL', 'CCU'].includes(departureCity.code) || ['DEL', 'CCU'].includes(arrivalCity.code)) {
-                durationHours = 2 + Math.floor(Math.random() * 1); // ~2-3 hours
+                durationHours = 2 + Math.floor(Math.random() * 1);
                 basePrice = 5000 + Math.floor(Math.random() * 3000);
               } else if (['BOM', 'BLR', 'HYD'].includes(departureCity.code) || ['BOM', 'BLR', 'HYD'].includes(arrivalCity.code)) {
-                durationHours = 1 + Math.floor(Math.random() * 1); // ~1-2 hours
+                durationHours = 1 + Math.floor(Math.random() * 1);
                 basePrice = 3000 + Math.floor(Math.random() * 2000);
               } else {
-              
                 durationHours = 6 + Math.floor(Math.random() * 8);
                 basePrice = 35000 + Math.floor(Math.random() * 25000);
               }
             } else if (cities[i].code.match(/^[A-Z]{3}$/) && cities[j].code.match(/^[A-Z]{3}$/)) {
-     
               durationHours = 1 + Math.floor(Math.random() * 3);
               basePrice = 3000 + Math.floor(Math.random() * 4000);
             } else if (departureCity.code === 'DEL' && ['JFK', 'YYZ', 'SYD'].includes(arrivalCity.code)) {
-          
               durationHours = 14 + Math.floor(Math.random() * 4);
               basePrice = 75000 + Math.floor(Math.random() * 25000);
             } else {
-        
               durationHours = 6 + Math.floor(Math.random() * 6);
               basePrice = 35000 + Math.floor(Math.random() * 25000);
             }
             
             const durationMinutes = Math.floor(Math.random() * 60);
             
-        
             const totalMinutes = departureHour * 60 + durationHours * 60 + durationMinutes;
             const arrivalHour = Math.floor((totalMinutes / 60) % 24);
             const arrivalMinute = totalMinutes % 60;
@@ -142,12 +124,9 @@ const generateFlights = (): Flight[] => {
   return flights;
 };
 
-
 export const mockFlights = generateFlights();
 
-
-export const searchFlights = async (from: string, to: string, date: string): Promise<Flight[]> => {
-  
+export const searchFlights = async (from, to, date) => {
   await new Promise(resolve => setTimeout(resolve, 500));
   
   return mockFlights.filter(flight => 
@@ -159,19 +138,16 @@ export const searchFlights = async (from: string, to: string, date: string): Pro
   );
 };
 
-
-export const getFlightById = (id: string): Flight | undefined => {
+export const getFlightById = (id) => {
   return mockFlights.find(flight => flight.id === id);
 };
 
-
-export const getRandomFlights = (count: number): Flight[] => {
+export const getRandomFlights = (count) => {
   const shuffled = [...mockFlights].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 };
 
-
-export const getAvailableDates = (from: string, to: string): string[] => {
+export const getAvailableDates = (from, to) => {
   return Array.from(new Set(
     mockFlights
       .filter(flight => 
@@ -184,10 +160,9 @@ export const getAvailableDates = (from: string, to: string): string[] => {
   )).sort();
 };
 
-
-export const getAvailableCities = (): { city: string; code: string }[] => {
-  const cities = new Set<string>();
-  const result: { city: string; code: string }[] = [];
+export const getAvailableCities = () => {
+  const cities = new Set();
+  const result = [];
   
   mockFlights.forEach(flight => {
     if (!cities.has(flight.departureCity)) {

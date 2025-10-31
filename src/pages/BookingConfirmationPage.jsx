@@ -7,12 +7,12 @@ import { getFlightById } from '../data/flights';
 import BookingDetails from '../components/Booking/BookingDetails';
 import { CheckCircle, AlertCircle } from 'lucide-react';
 
-const BookingConfirmationPage: React.FC = () => {
-  const { bookingId } = useParams<{ bookingId: string }>();
+const BookingConfirmationPage = () => {
+  const { bookingId } = useParams();
   const { user, isAuthenticated } = useAuth();
   
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
   const [booking, setBooking] = useState(null);
   const [flight, setFlight] = useState(null);
 

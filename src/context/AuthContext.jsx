@@ -1,17 +1,7 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { User } from '../types';
+import React, { createContext, useState, useEffect } from 'react';
 import { authenticateUser, registerUser } from '../data/users';
 
-interface AuthContextType {
-  user: User | null;
-  isLoading: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
-  register: (name: string, email: string, password: string) => Promise<{ success: boolean; message?: string }>;
-  logout: () => void;
-  isAuthenticated: boolean;
-}
-
-export const AuthContext = createContext<AuthContextType>({
+export const AuthContext = createContext({
   user: null,
   isLoading: true,
   login: async () => ({ success: false }),
@@ -20,16 +10,11 @@ export const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false
 });
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    
     const userData = localStorage.getItem('user');
     if (userData) {
       try {
@@ -42,13 +27,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email, password) => {
     try {
       const authenticatedUser = authenticateUser(email, password);
       
       if (authenticatedUser) {
         setUser(authenticatedUser);
-       
         localStorage.setItem('user', JSON.stringify(authenticatedUser));
         return { success: true };
       }
@@ -66,12 +50,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (name, email, password) => {
     try {
- 
       const newUser = registerUser({ name, email, password });
       setUser(newUser);
-    
       localStorage.setItem('user', JSON.stringify(newUser));
       return { success: true };
     } catch (error) {
@@ -103,7 +85,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
 
 export const useAuth = () => {
   const context = React.useContext(AuthContext);

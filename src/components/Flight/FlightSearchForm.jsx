@@ -3,17 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { Calendar, MapPin, Search } from 'lucide-react';
 import { getAvailableCities, getAvailableDates } from '../../data/flights';
 
-const FlightSearchForm: React.FC = () => {
+const FlightSearchForm = () => {
   const navigate = useNavigate();
   const [departure, setDeparture] = useState('');
   const [arrival, setArrival] = useState('');
-  const [date, setDate] = useState<string>(
+  const [date, setDate] = useState(
     new Date(2025, 4, 15).toISOString().split('T')[0] 
   );
-  const [cities, setCities] = useState<{ city: string; code: string }[]>([]);
-  const [availableDates, setAvailableDates] = useState<string[]>([]);
-  const [departureSuggestions, setDepartureSuggestions] = useState<{ city: string; code: string }[]>([]);
-  const [arrivalSuggestions, setArrivalSuggestions] = useState<{ city: string; code: string }[]>([]);
+  const [cities, setCities] = useState([]);
+  const [availableDates, setAvailableDates] = useState([]);
+  const [departureSuggestions, setDepartureSuggestions] = useState([]);
+  const [arrivalSuggestions, setArrivalSuggestions] = useState([]);
   const [showDepartureSuggestions, setShowDepartureSuggestions] = useState(false);
   const [showArrivalSuggestions, setShowArrivalSuggestions] = useState(false);
   const [errors, setErrors] = useState({
@@ -41,7 +41,7 @@ const FlightSearchForm: React.FC = () => {
     }
   }, [departure, arrival]);
 
-  const handleDepartureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDepartureChange = (e) => {
     const value = e.target.value;
     setDeparture(value);
     setShowDepartureSuggestions(true);
@@ -57,7 +57,7 @@ const FlightSearchForm: React.FC = () => {
     }
   };
 
-  const handleArrivalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleArrivalChange = (e) => {
     const value = e.target.value;
     setArrival(value);
     setShowArrivalSuggestions(true);
@@ -73,7 +73,7 @@ const FlightSearchForm: React.FC = () => {
     }
   };
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDateChange = (e) => {
     const selectedDate = e.target.value;
     if (availableDates.includes(selectedDate)) {
       setDate(selectedDate);
@@ -119,7 +119,7 @@ const FlightSearchForm: React.FC = () => {
     return valid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     
     if (validateForm()) {
@@ -129,8 +129,8 @@ const FlightSearchForm: React.FC = () => {
 
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
+    const handleClickOutside = (e) => {
+      const target = e.target;
       if (!target.closest('#departure-container')) {
         setShowDepartureSuggestions(false);
       }

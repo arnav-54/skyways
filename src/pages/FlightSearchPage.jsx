@@ -3,10 +3,9 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import FlightCard from '../components/Flight/FlightCard';
 import { searchFlights } from '../data/flights';
-import { Flight, SortOption, SortDirection } from '../types';
 import { ArrowUpDown, ArrowUp, ArrowDown, Clock, IndianRupee, Calendar, Search, Filter } from 'lucide-react';
 
-const FlightSearchPage: React.FC = () => {
+const FlightSearchPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   
@@ -14,10 +13,10 @@ const FlightSearchPage: React.FC = () => {
   const to = searchParams.get('to') || '';
   const date = searchParams.get('date') || '';
   
-  const [flights, setFlights] = useState<Flight[]>([]);
+  const [flights, setFlights] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [sortOption, setSortOption] = useState<SortOption>('departureTime');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [sortOption, setSortOption] = useState('departureTime');
+  const [sortDirection, setSortDirection] = useState('asc');
   const [showFilters, setShowFilters] = useState(false);
   
   // Search form state
@@ -63,7 +62,7 @@ const FlightSearchPage: React.FC = () => {
         break;
       case 'duration':
         // Parse duration strings (assume format like "2h 30m")
-        const getDurationMinutes = (duration: string) => {
+        const getDurationMinutes = (duration) => {
           const match = duration.match(/(\d+)h\s+(\d+)m/);
           if (match) {
             const hours = parseInt(match[1], 10);
@@ -76,8 +75,8 @@ const FlightSearchPage: React.FC = () => {
         comparison = getDurationMinutes(a.duration) - getDurationMinutes(b.duration);
         break;
       case 'departureTime':
-        // Parse time strings (format: "HH:MM")
-        const getMinutes = (time: string) => {
+        // Parse time strings (format)
+        const getMinutes = (time) => {
           const [hours, minutes] = time.split(':').map(Number);
           return hours * 60 + minutes;
         };
@@ -89,7 +88,7 @@ const FlightSearchPage: React.FC = () => {
     return sortDirection === 'asc' ? comparison : -comparison;
   });
 
-  const toggleSort = (option: SortOption) => {
+  const toggleSort = (option) => {
     if (sortOption === option) {
       // Toggle direction if same option
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
@@ -100,7 +99,7 @@ const FlightSearchPage: React.FC = () => {
     }
   };
 
-  const getSortIcon = (option: SortOption) => {
+  const getSortIcon = (option) => {
     if (sortOption !== option) {
       return <ArrowUpDown className="h-4 w-4" />;
     }
@@ -110,7 +109,7 @@ const FlightSearchPage: React.FC = () => {
       <ArrowDown className="h-4 w-4" />;
   };
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e) => {
     e.preventDefault();
     navigate(`/search?from=${searchFrom}&to=${searchTo}&date=${searchDate}`);
   };

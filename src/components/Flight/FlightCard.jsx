@@ -1,13 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Flight } from '../../types';
 import { Clock, IndianRupee, Users } from 'lucide-react';
 
-interface FlightCardProps {
-  flight: Flight;
-}
 
-const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
+const FlightCard = ({ flight }) => {
 
   const formattedPrice = new Intl.NumberFormat('en-IN', {
     style: 'currency',

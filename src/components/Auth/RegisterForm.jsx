@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { UserPlus } from 'lucide-react';
 
-const RegisterForm: React.FC = () => {
+const RegisterForm = () => {
   const navigate = useNavigate();
   const { register } = useAuth();
   
@@ -14,7 +14,7 @@ const RegisterForm: React.FC = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     

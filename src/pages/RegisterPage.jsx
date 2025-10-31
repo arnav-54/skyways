@@ -4,7 +4,7 @@ import MainLayout from '../components/Layout/MainLayout';
 import RegisterForm from '../components/Auth/RegisterForm';
 import { useAuth } from '../context/AuthContext';
 
-const RegisterPage: React.FC = () => {
+const RegisterPage = () => {
   const { isAuthenticated } = useAuth();
 
   // Redirect if already authenticated

@@ -4,7 +4,7 @@ import MainLayout from '../components/Layout/MainLayout';
 import LoginForm from '../components/Auth/LoginForm';
 import { useAuth } from '../context/AuthContext';
 
-const LoginPage: React.FC = () => {
+const LoginPage = () => {
   const { isAuthenticated } = useAuth();
 
   // Redirect if already authenticated
